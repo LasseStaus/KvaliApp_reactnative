@@ -3,41 +3,39 @@ import { useNavigation } from '@react-navigation/native';
 import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 const ChatRoom = props => {
-    const navigation = useNavigation(); 
-
-    const lastPos = props.chatroom.messages.length-1;
+    const navigation = useNavigation();
+    const lastPos = props.chatroom.messages.length - 1;
     let lastMessageText, displayTime = '';
     if (lastPos > -1) {
         lastMessageText = props.chatroom.messages[lastPos].messageText;
         const lastTime = props.chatroom.messages[lastPos].messageTimestamp;
 
         // Should only do this if on the same date as today...
-        displayTime = lastTime.getHours() + ":" +lastTime.getMinutes();
+        displayTime = lastTime.getHours() + ":" + lastTime.getMinutes();
     }
     return (
-    <TouchableOpacity onPress={() => navigation.navigate("ChatMessages", {id: props.chatroom.chatRoomId})}>
-        <View style={styles.chatRoom}>
-        
-            <View style={styles.imageView}>
-                <Image
-                    style={styles.tinyLogo}
-                    source={require('./../assets/ac99082f65d5c636e14e70785817899e.png')}/>
+        <TouchableOpacity onPress={() => navigation.navigate("ChatMessages", { id: props.chatroom.chatRoomId })}>
+            <View style={styles.chatRoom}>
+                <View style={styles.imageView}>
+                    <Image
+                        style={styles.tinyLogo}
+                        source={require('./../assets/ac99082f65d5c636e14e70785817899e.png')} />
+                </View>
+                <View style={styles.textView}>
+                    <Text style={styles.text}>{props.chatroom.chatRoomName}</Text>
+                    <Text ellipsizeMode='tail' numberOfLines={1}>{lastMessageText}</Text>
+                </View>
+                <View style={styles.dotView}>
+                    <View style={styles.dot}></View>
+                    <Text>{displayTime}</Text>
+                </View>
             </View>
-            <View style={styles.textView}>
-                <Text style={styles.text}>{props.chatroom.chatRoomName}</Text>
-                <Text ellipsizeMode='tail' numberOfLines={1}>{lastMessageText}</Text>
-            </View>
-            <View style={styles.dotView}>
-                <View style={styles.dot}></View>
-                <Text>{displayTime}</Text>
-            </View>
-        </View>
-    </TouchableOpacity>
- );
+        </TouchableOpacity>
+    );
 }
 
 const styles = StyleSheet.create({
-   
+
     chatRoom: {
         flexDirection: 'row',
         marginTop: 10,
@@ -51,27 +49,27 @@ const styles = StyleSheet.create({
         width: '80%'
     },
     message: {
-        
+
     },
     text: {
-         fontWeight: "bold",
+        fontWeight: "bold",
     },
     dotView: {
-         marginLeft: 'auto'
-        
+        marginLeft: 'auto'
+
     },
     imageView: {
         marginTop: -10
     },
     dot: {
-     height: 12,
-     width: 12,
-     backgroundColor: '#5050A5',
-     borderRadius: 100 / 2,
-   },
+        height: 12,
+        width: 12,
+        backgroundColor: '#5050A5',
+        borderRadius: 100 / 2,
+    },
     tinyLogo: {
-     width: 50,
-     height: 50,
-   },
- });
+        width: 50,
+        height: 50,
+    },
+});
 export default ChatRoom;

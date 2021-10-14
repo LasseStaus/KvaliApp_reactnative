@@ -2,42 +2,48 @@ import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet, FlatList, Image, TextInput } from 'react-native';
 import { ChatRooms } from './../dummy-data/DummyData';
 import ChatMessage from './../components/ChatMessage';
+import { useDispatch, useSelector } from 'react-redux';
+import { newChatMessage } from '../store/actions/ChatActions';
 
 const ChatMessagesScreen = props => {
     const { id } = props.route.params;
     // console.log(id);
     const [value, onChangeText] = useState('Write message');
-// console.log(ChatRooms);
-    const chatMessages = ChatRooms.find(room => room.chatRoomId === id).messages;
+    // console.log(ChatRooms);
+    //  const chatMessages = ChatRooms.find(room => room.chatRoomId === id).messages;
+    const chatMessages = useSelector(state => state.chat.chatRooms).find(room => room.chatRoomId === id).messages;
+
+    const dispatch = useDispatch();
 
     const handleSend = () => {
-        console.log("value " + value);
+        dispatch(newChatMessage(id, value));
+
     };
 
     return (
-    <View style={styles.container}>
-            
+        <View style={styles.container}>
+
             <View style={styles.messages}>
                 <FlatList data={chatMessages} renderItem={itemData => (
-                    <ChatMessage chatmessage={itemData.item} image={require('./../assets/ac99082f65d5c636e14e70785817899e.png')}></ChatMessage> 
+                    <ChatMessage chatmessage={itemData.item} image={require('./../assets/ac99082f65d5c636e14e70785817899e.png')}></ChatMessage>
                 )} keyExtractor={item => item.messageId}></FlatList>
             </View>
-            
+
             <View style={styles.inputView}>
                 <Image
                     style={styles.tinyLogo}
-                    source={require('./../assets/6d38ab105ed32e0c25e4f82e1e9ccd2a.png')}/>
-                
+                    source={require('./../assets/6d38ab105ed32e0c25e4f82e1e9ccd2a.png')} />
+
                 <TextInput
                     style={styles.textInput}
                     onChangeText={text => onChangeText(text)}
-                    value={value}/>
+                    value={value} />
 
                 <Button title="Send" onPress={handleSend}></Button>
             </View>
 
-    </View>
- );
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -50,8 +56,8 @@ const styles = StyleSheet.create({
     },
     textInput: {
         flex: 1,
-        height: 40, 
-        backgroundColor: 'lightgray', 
+        height: 40,
+        backgroundColor: 'lightgray',
         marginLeft: 10,
         borderRadius: 5,
         padding: 10,
@@ -62,10 +68,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 20,
         marginLeft: 5,
-        
+
     },
     tinyLogo: {
-        
+
         marginTop: -5
     },
 });

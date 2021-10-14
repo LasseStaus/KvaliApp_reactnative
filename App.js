@@ -9,25 +9,34 @@ import ChatStackNavigator from './components/ChatStackNavigator';
 import HomeScreen from './screens/HomeScreen';
 import DiscoverScreen from './screens/DiscoverScreen';
 import MenuScreen from './screens/MenuScreen';
+import SignupScreen from './screens/SignupScreen';
+import LoginScreen from './screens/LoginScreen';
 import { HeaderShownContext } from '@react-navigation/elements';
 
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import ChatReducer from './store/reducers/ChatReducer';
-import { Provider } from 'react-redux';
+import UserReducer from './store/reducers/UserReducer';
+import { Provider, useSelector } from 'react-redux';
+import ReduxThunx from 'redux-thunk';
+import { State } from 'react-native-gesture-handler';
+import ChatScreen from './screens/ChatScreen';
+import Navigation from './components/Navigation';
 
 export default function App() {
 
-const Tab = createBottomTabNavigator();
+  const rootReducer = combineReducers({
+    chat: ChatReducer,
+    user: UserReducer
+  })
+
+  const store = createStore(rootReducer, applyMiddleware(ReduxThunx));
+
+
 
   return (
-      <NavigationContainer>
-        <Tab.Navigator screenOptions={{ headerShown: false }}>
-          <Tab.Screen name="Home" component={HomeScreen} />
-          <Tab.Screen name="Discover" component={DiscoverScreen} />
-          <Tab.Screen name="ChatOuter" component={ChatStackNavigator} />
-          <Tab.Screen name="Menu" component={MenuScreen} />
-        </Tab.Navigator>
-      </NavigationContainer>
+    <Provider store={store}>
+      <Navigation></Navigation>
+    </Provider>
   );
 }
 
