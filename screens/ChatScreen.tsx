@@ -3,17 +3,17 @@ import { View, Text, Button, StyleSheet, FlatList, TextInput } from 'react-nativ
 import { useNavigation } from '@react-navigation/native';
 
 
-import ChatRoom from './../components/ChatRoom'
+import ChatRoom from '../components/ChatRoom'
 import { useDispatch, useSelector } from 'react-redux';
-import { newChatRoom, toggleHappy, deleteChatRoom, get_chatrooms } from './../store/actions/ChatActions';
+import { newChatRoom, toggleHappy, deleteChatRoom, get_chatrooms } from '../store/actions/ChatActions';
 import { onChange } from 'react-native-reanimated';
 
 //import defaultStyles from './../styles/defaultStyles';
 
 
 const ChatScreen = props => {
-  const isHappy = useSelector(state => state.chat.isHappy);
-  const chatRooms = useSelector(state => state.chat.chatRooms);
+  const isHappy = useSelector((state:any) => state.chat.isHappy);
+  const chatRooms = useSelector((state:any) => state.chat.chatRooms);
 
   const [text, onChangeText] = useState("");
   const dispatch = useDispatch();

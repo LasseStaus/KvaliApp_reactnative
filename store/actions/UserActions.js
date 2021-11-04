@@ -6,6 +6,8 @@ import { api_key } from '../../APIKEYS/apikey'
 import * as SecureStore from 'expo-secure-store';
 export const SIGNUP = 'SIGNUP';
 export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
+export const REFRESH_TOKEN = 'REFRESH_TOKEN';
 
 
 
