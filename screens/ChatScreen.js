@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet, FlatList, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -13,17 +13,19 @@ import { onChange } from 'react-native-reanimated';
 
 const ChatScreen = props => {
   const isHappy = useSelector(state => state.chat.isHappy);
-  const [text, onChangeText] = useState("");
-
-
   const chatRooms = useSelector(state => state.chat.chatRooms);
+
+  const [text, onChangeText] = useState("");
   const dispatch = useDispatch();
+
   /*  useEffect(dispatch(get_chatrooms())); */
-  dispatch(get_chatrooms());
+  /*   dispatch(get_chatrooms()); */
   const handleChristianHappy = () => {
     dispatch(toggleHappy(!isHappy));
   }
-
+  React.useEffect(() => {
+    dispatch(get_chatrooms());
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -41,8 +43,6 @@ const ChatScreen = props => {
         )}
         keyExtractor={item => item.chatRoomId}
       />
-
-
     </View>
   );
 }

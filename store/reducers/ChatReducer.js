@@ -16,13 +16,9 @@ const initialState = {
 }
 
 const ChatReducer = (state = initialState, action) => {
-
     switch (action.type) {
-
         case GET_CHATROOMS:
-
             return { ...state, chatRooms: action.payload };
-
         case TOGGLE_HAPPY:
             //state.isHappy = true // NO ITS A MUTATION
             return { ...state, isHappy: action.payload };
@@ -30,7 +26,6 @@ const ChatReducer = (state = initialState, action) => {
             const tempId = Math.random().toString();
             const chatRoom = new ChatRoom(tempId, undefined, action.payload, []);
             const exists = state.chatRooms.find((item) => item.chatRoomName === action.payload);
-
             if (!exists) {
                 return { ...state, chatRooms: [...state.chatRooms, chatRoom] };
             }
@@ -38,29 +33,18 @@ const ChatReducer = (state = initialState, action) => {
                 console.log('taken');
                 return state;
             }
-
         case DELETE_CHATROOM:
             // console.log(action.payload)
             const newList = state.chatRooms.filter((item) => item.chatRoomName !== action.payload);
             // console.log('tis', newList)
             return { ...state, chatRooms: newList }
-
-
         case NEW_CHATMESSAGE:
             // Find the chatroom object based on chatroomId.    
             // Copy messages array of the right chatroom object
             // Copy chatrooms to avoid state mutations when updating the messages array in the 
             // specific chatroom object.
-
-
             const chatroom = state.chatRooms.find(room => room.chatRoomId === action.payload.chatRoomId);
             const chatmessages = [...chatroom.messages, action.payload.messageObj];
-
-
-
-
-
-
             // 2: Copy chatroom object and attach new chat array that you copied.
             const newChatRoom = { ...chatroom };
             newChatRoom.messages = chatmessages;
@@ -73,15 +57,8 @@ const ChatReducer = (state = initialState, action) => {
             chatroomArray.splice(index, 1, newChatRoom);
 
             return { ...state, chatRooms: chatroomArray };
-
-
-
         default:
             return state;
     }
 }
-/* const moviesReducer = (state = initialState, action) => {
-    return state;
-} */
-
 export default ChatReducer;

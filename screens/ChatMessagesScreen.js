@@ -1,34 +1,33 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet, FlatList, Image, TextInput } from 'react-native';
-import { ChatRooms } from './../dummy-data/DummyData';
+
 import ChatMessage from './../components/ChatMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import { newChatMessage } from '../store/actions/ChatActions';
+import Message from '../models/Message';
 
 const ChatMessagesScreen = props => {
+    const dispatch = useDispatch();
     const { id } = props.route.params;
     // console.log(id);
     const [value, onChangeText] = useState('Write message');
     // console.log(ChatRooms);
     //  const chatMessages = ChatRooms.find(room => room.chatRoomId === id).messages;
     const chatMessages = useSelector(state => state.chat.chatRooms).find(room => room.chatRoomId === id).messages;
+    const loggedInUser = useSelector(state => state.user.loggedInUser);
 
-    const dispatch = useDispatch();
 
     const handleSend = () => {
-        dispatch(newChatMessage(id, value));
-
+        const message = new Message('', value, new Date(), loggedInUser);
+        dispatch(newChatMessage(id, message));
     };
-
     return (
         <View style={styles.container}>
-
             <View style={styles.messages}>
                 <FlatList data={chatMessages} renderItem={itemData => (
                     <ChatMessage chatmessage={itemData.item} image={require('./../assets/ac99082f65d5c636e14e70785817899e.png')}></ChatMessage>
                 )} keyExtractor={item => item.messageId}></FlatList>
             </View>
-
             <View style={styles.inputView}>
                 <Image
                     style={styles.tinyLogo}
@@ -38,7 +37,6 @@ const ChatMessagesScreen = props => {
                     style={styles.textInput}
                     onChangeText={text => onChangeText(text)}
                     value={value} />
-
                 <Button title="Send" onPress={handleSend}></Button>
             </View>
 

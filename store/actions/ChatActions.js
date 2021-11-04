@@ -55,24 +55,18 @@ export const get_chatrooms = props => {
 
         });
         const data = await response.json();
-        console.log('se her mor', data) // json to javascript
+        console.log('data reponse: ', data) // json to javascript
 
         if (!response.ok) {
             console.log('NOT ok', response)
-
-
         } else {
-
             let chatRooms = [];
-
-
             for (const key in data) {
                 let chatroomName = data[key].chatroomName;
                 let chatroomKey = key;
                 console.log('key: ', chatroomKey)
-                console.log('ved ikk: ', chatroomName)
+                console.log('chatroomname: ', chatroomName)
                 chatRooms.push(new ChatRoom(key, '', data[key].chatroomName, ''));
-
             }
             dispatch({ type: GET_CHATROOMS, payload: chatRooms })
         }
@@ -85,7 +79,7 @@ export const deleteChatRoom = (chatroomName) => {
     }
 }
 
-export const newChatMessage = (chatRoomId, message) => {
+/* export const newChatMessage = (chatRoomId, message) => {
 
     const tempUser = new User('1', 'Peter Møller', 'Jensen', 'dummyUrlLink');
     const messageObj = new Message(Math.random().toString(), message, new Date(), tempUser);
@@ -93,5 +87,31 @@ export const newChatMessage = (chatRoomId, message) => {
     // console.log(messageObj);
     // console.log("************");
     return { type: NEW_CHATMESSAGE, payload: { chatRoomId, messageObj } };
-}
+} */
+export const newChatMessage = (chatRoomId, message) => {
+    return async (dispatch, getState) => { //redux thunk
+        const token = getState().user.token;
+        const response = await fetch('https://kvaliapp-c1e89-default-rtdb.europe-west1.firebasedatabase.app/chatrooms/' + chatRoomId + '/messages.json?auth=' + token, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ...message
+            })
+
+        });
+        const data = await response.json();
+        console.log('data reponse: ', data) // json to javascript
+
+        if (!response.ok) {
+            console.log('NOT ok', response)
+        } else {
+            dispatch({ type: NEW_CHATMESSAGE, payload: { chatRoomId, messageObj: message } })
+
+        }
+
+    }
+};
+
 

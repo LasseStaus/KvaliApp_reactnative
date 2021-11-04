@@ -1,11 +1,8 @@
 
 
 import { SIGNUP } from '../actions/UserActions';
-import { LOGIN } from '../actions/UserActions';
+import { LOGIN, REFRESH_TOKEN, LOGOUT } from '../actions/UserActions';
 
-import { ChatRooms } from '../../dummy-data/DummyData';
-import ChatRoom from '../../models/ChatRoom';
-import User from '../../models/User';
 
 const initialState = {
     loggedInUser: undefined,
@@ -15,6 +12,10 @@ const initialState = {
 
 const UserReducer = (state = initialState, action) => {
     switch (action.type) {
+        case LOGOUT:
+            return { ...state, loggedInUser: undefined, token: undefined };
+
+
         case LOGIN:
 
             return { ...state, loggedInUser: action.payload.user, token: action.payload.token };

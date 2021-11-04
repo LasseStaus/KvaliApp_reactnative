@@ -61,9 +61,9 @@ const Navigation = props => {
 
                 <Tab.Navigator >
 
-                    <Tab.Screen name="Home" component={SignupScreen} />
+                    <Tab.Screen name="Login" component={LoginScreen} />
+                    <Tab.Screen name="Signup" component={SignupScreen} />
 
-                    <Tab.Screen name="Discover" component={LoginScreen} />
 
                 </Tab.Navigator>
 
